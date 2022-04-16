@@ -1,3 +1,7 @@
+"""
+Lab 4, task 5
+"""
+
 import random
 
 description = []
@@ -5,20 +9,41 @@ linked = []
 players_in_rooms = dict()
 items_in_rooms = dict()
 class Room:
+    """
+    Room class
+    """
     def __init__(self, room):
+        """
+        Initialization
+        """
         self.room = room
     def set_description(self, words):
+        """
+        Setting the description
+        """
         description.append((self.room, words))
     def link_room(self, another_room, side):
+        """
+        Linking the room to its side
+        """
         return linked.append((self.room, another_room.room, side))
     def set_character(self, character):
+        """
+        Setting the character as an object
+        """
         players_in_rooms[self.room] = character.name
     def set_item(self, item):
+        """
+        Setting the item as an object
+        """
         if item is None:
             del items_in_rooms[self.room]
             return True
         items_in_rooms[self.room] = item.item
     def get_details(self):
+        """
+        Getting details
+        """
         for i in description:
             if i[0] == self.room:
                 print(f'The Desription of {self.room} is {i[1]}')
@@ -38,6 +63,9 @@ class Room:
             if i[0] == self.room:
                 print(f'If you go to {i[1]} you go to {i[2]}')
     def get_character(self):
+        """
+        Getting the character
+        """
         if self.room not in players_in_rooms.keys():
             return None
         else:
@@ -45,12 +73,18 @@ class Room:
             descr = [i[1] for i in list_for_conversation_enemy if i[0] == name]
             return Enemy(name, descr)
     def get_item(self):
+        """
+        Getting item
+        """
         if self.room not in items_in_rooms.keys():
             return None
         else:
             my_item = items_in_rooms[self.room]
             return Item(my_item)
     def move(self, side):
+        """
+        Moving
+        """
         for i in linked:
            if i[2] == side:
                 if i[1] == self.room:
@@ -64,7 +98,13 @@ class Room:
 
 
 class Character:
+    """
+    Character
+    """
     def __init__(self, name, characteristics):
+        """
+        Initialization
+        """
         self.name = name
         self.characteristics = characteristics
 
@@ -73,23 +113,44 @@ list_for_conversation_enemy = []
 list_for_weekness_enemy = []
 list_of_wins = []
 class Enemy(Character):
+    """
+    Enemy character which is inherited from Character
+    """
     def __init__(self, name, characteristics):
+        """
+        initialization
+        """
         super().__init__(name, characteristics)
     def set_conversation(self, dialogue):
+        """
+        Setting the conversotion
+        """
         list_for_conversation_enemy.append((self.name, self.characteristics, dialogue))
     def set_weakness(self, weak_side):
+        """
+        Setting weeknesses
+        """
         list_for_weekness_enemy.append((self.name, weak_side))
     def describe(self):
+        """
+        Describing the character
+        """
         for elem in list_for_conversation_enemy:
             if elem[0] == self.name:
                 print(f'{elem[0]} is a {elem[1]}')
                 break
     def talk(self):
+        """
+        Talking
+        """
         for row in list_for_conversation_enemy:
             if row[0] == self.name:
                 print(row[2])
                 break
     def fight(self, tool):
+        """
+        Fighting with demons
+        """
         can_he_fight = random.randint(1,2)
         tool = str(tool)
         if can_he_fight == 1:
@@ -98,6 +159,9 @@ class Enemy(Character):
         else:
             return False
     def get_defeated(self):
+        """
+        returns bool if enemy is defeated
+        """
         if len(list_of_wins) == 2:
             return 2
         else:
@@ -106,16 +170,31 @@ class Enemy(Character):
 
 items = []
 class Item:
+    """
+    Item class
+    """
     def __init__(self, item):
+        """
+        Initialization
+        """
         self.item = item
     def set_description(self, descr):
+        """
+        Setting description
+        """
         items.append((self.item, descr))
     def describe(self):
+        """
+        Describing
+        """
         for i in items:
             if i[0] == self.item:
                 print(f'The description of the {i[0]} is {i[1]}')
                 break
     def get_name(self):
+        """
+        getting the name
+        """
         return self.item
 
 kitchen = Room("Kitchen")
